@@ -1,5 +1,3 @@
-
-
 void measureVoltageAndAmpier()
 {
   // Read the data from the sensor
@@ -11,12 +9,16 @@ void measureVoltageAndAmpier()
   float pf = pzem.pf();
   supplyVoltage = floor(voltage);
   AmpsRMS = current;
-  totalBill = energy * unitPrice;
+//  totalBill = energy * unitPrice;
   units = energy;
   pfVal = pf;
   powerOfPump = power;
   frequencyOfElectricity = frequency;
   //supplyVoltage,AmpsRMS
+
+  if(isnan(voltage) || isnan(current) || isnan(pf)){
+    needRestart = 1;
+    }
 }
 
 void controlPF()

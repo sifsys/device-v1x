@@ -3,10 +3,6 @@ void turnRGB(int r, int g, int b, boolean state)
 {
   if (state)
   {
-    //digitalWrite(21, HIGH);
-//    analogWrite(redP, ((r - 255) * -1));
-//    analogWrite(greenP, ((g - 255) * -1));
-//    analogWrite(blueP, ((b - 255) * -1));
 
     analogWrite(redP, r);
     analogWrite(greenP, g);
@@ -24,7 +20,3 @@ void turnRGB(int r, int g, int b, boolean state)
     delay(500);
   }
 }
-
-//void ledSTateForDevelopmentMode()
-//{
-//}

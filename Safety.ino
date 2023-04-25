@@ -1,5 +1,3 @@
-
-
 void turnOffPump()
 {
   if (digitalRead(developmentPin) == LOW)
@@ -67,8 +65,8 @@ void longTimeBuzzer()
   }
 }
 
-void safetyLoop()
-{
+//void safetyLoop()
+//{
 //  if (laserState == 1)
 //  {
 //    error[6] = "laser";
@@ -100,4 +98,4 @@ void safetyLoop()
 //    error[2] = "";
 //  }
 
-}
+//}

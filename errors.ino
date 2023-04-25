@@ -1,6 +1,3 @@
-
-
-
 String createError()
 {
   if (max_volt < supplyVoltage)

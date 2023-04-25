@@ -18,7 +18,7 @@ void printOnSerial()
     Serial.println("Ampier: " + String(AmpsRMS));
     Serial.println("PUMP: " + String(digitalRead(pumpRelayPin)));
 
-    Serial.println("Bills: "+String(totalBill)+" BDT");
+    //Serial.println("Bills: "+String(totalBill)+" BDT");
     Serial.println("Board Temperature: "+String(getTempMeasurement(boardTemperaturePin)));
     Serial.println("Main Temperature: "+String(getTempMeasurement(PinMainTemp)));
 

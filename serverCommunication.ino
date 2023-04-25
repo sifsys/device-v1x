@@ -15,6 +15,8 @@ void readRequestData()
                     + "&load= " + String(powerOfPump)
                     + "&frequency= " + String(frequencyOfElectricity)
                     + "&extraSwitch= " + String(digitalRead(extraSwitchPin))
+                    + "&needRestart= " + String(needRestart)
+                    + "&step=" + condStep
                     + "&error= " + createError();
 }
 void communicationLoop()
@@ -39,7 +41,14 @@ void communicationLoop()
       //Serial.print("JSON object = ");
       Serial.println(myObject);
 
-
+    if (myObject.hasOwnProperty("step")) 
+    {
+      
+      condStep = (int) myObject["step"];
+      //Serial.print("Current model is: ");
+      //Serial.println(model);
+    }
+    
     if (myObject.hasOwnProperty("maxFlowRate")) 
     {
       
@@ -118,34 +127,22 @@ void communicationLoop()
 //      Serial.print("MInimum Water Flow rate is: ");
 //      Serial.println(minimumFlowRate);
     }
+    if (myObject.hasOwnProperty("reboot"))
+    {
+      reboot = (int) myObject["reboot"];
+//      Serial.print("Reboot clearance: ");
+//      Serial.println(reboot);
+    }
 
+    if(needRestart == 1 && reboot == 1){
+       esp_restart();
+    }
     if(extraSwitch ==1 ){
        digitalWrite(extraSwitchPin, HIGH);
     }else{
       digitalWrite(extraSwitchPin, LOW);
     }
-    
-//        max_volt = int(myObject[keys[getObjectValSerial("Vmax")]]);
-//        min_volt = int(myObject[keys[getObjectValSerial("Vmin")]]);
-//        max_ampier = int(myObject[keys[getObjectValSerial("AMPmax")]]);
-//        min_ampier = int(myObject[keys[getObjectValSerial("AMPmin")]]);
-//        //maxDistanceToDetect = int(myObject[keys[getObjectValSerial("ult")]]);
-//        maxTempToTurnOffPump = int(myObject[keys[getObjectValSerial("TempMax")]]);
-//        maxRainPercentage = int(myObject[keys[getObjectValSerial("rain")]]);
-//        //laserBrightness = int(myObject[keys[getObjectValSerial("laser")]]);
-//        minimumFlowRate = int(myObject[keys[getObjectValSerial("minFlow")]]);
-//        pfMinimum = int(myObject[keys[getObjectValSerial("pf")]]);
-//        warningDevice = int(myObject[keys[getObjectValSerial("sensor")]]);
 
-
-      
-      //JSONVar keys = myObject.keys();
-
-      //JSONVar value = myObject[keys[0]];
-
-
-      //JSONVar cond1 = "on";
-      //JSONVar cond2 = "off";
 
       if(sensorStatus == 1 ){
         
@@ -190,48 +187,6 @@ void communicationLoop()
         serverLag = true;
         Serial.println("ErrorChecked");
       }
-    
-
-
-  
-
-
-      
-      
-      
-//      JSONVar blankTxt = "";
-//      // myObject.keys() can be used to get an array of all the keys in the object
-//      Serial.println(myObject[keys[getObjectValSerial("sensor")]]);
-//      if (serverLag == false)
-//      {
-//
-//
-//        for (int j = 0; j < 50; j++)
-//        {
-//       String  varNames[j] = keys[j];
-//        }
-//        for (int x = 0; x < 50; x++)
-//        {
-//         String varValues[x] = myObject[keys[x]];
-//        }
-//
-//        max_volt = int(myObject[keys[getObjectValSerial("Vmax")]]);
-//        min_volt = int(myObject[keys[getObjectValSerial("Vmin")]]);
-//        max_ampier = int(myObject[keys[getObjectValSerial("AMPmax")]]);
-//        min_ampier = int(myObject[keys[getObjectValSerial("AMPmin")]]);
-//        //maxDistanceToDetect = int(myObject[keys[getObjectValSerial("ult")]]);
-//        maxTempToTurnOffPump = int(myObject[keys[getObjectValSerial("TempMax")]]);
-//        maxRainPercentage = int(myObject[keys[getObjectValSerial("rain")]]);
-//        //laserBrightness = int(myObject[keys[getObjectValSerial("laser")]]);
-//        minimumFlowRate = int(myObject[keys[getObjectValSerial("minFlow")]]);
-//        pfMinimum = int(myObject[keys[getObjectValSerial("pf")]]);
-//        warningDevice = int(myObject[keys[getObjectValSerial("sensor")]]);
-//      }
-
-// int warnning = 
-//      Serial.print(keys[0]);
-//       Serial.print(" = ");
-//       Serial.println(value);
 
     }
     else {

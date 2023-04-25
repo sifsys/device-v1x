@@ -1,5 +1,34 @@
+#include <Arduino.h>
+#include <analogWrite.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <Arduino_JSON.h>
+#include <assert.h>
+
+//const char* ssid = "High Tech Park Authority";
+//const char* password = "12345678";
+//const char* ssid = "MyLightHost";
+//const char* password = "fig8me912";
+const char* ssid = "SiF";
+const char* password = "sif.systems";
+
+String serverName = "http://sifsys.com/api/device/pump/response";
+//String serverName = "http://sif.systems/p.php";
+
+String Readings;
+float ReadingsArr[5];
+
+int model;
+int condStep;
 
 const int pumpID = 1;
+
+//////////Error fixing////////
+const int maxReboots = 5;
+int rebootCounter = 0;
+int needRestart = 0;
+int reboot = 0;
+//////////////////////////////
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -31,14 +60,14 @@ boolean isError = false;
 #define PZEM_RX_PIN 16
 #define PZEM_TX_PIN 17
 #define PZEM_SERIAL Serial2
-#define CONSOLE_SERIAL Serial
+//#define CONSOLE_SERIAL Serial
 PZEM004Tv30 pzem(PZEM_SERIAL, PZEM_RX_PIN, PZEM_TX_PIN);
 
 // Create an instance
 
 double AmpsRMS = 0;
-double unitPrice = 5.00;
-double totalBill = 0.00;
+//double unitPrice = 5.00;
+//double totalBill = 0.00;
 float max_volt = 250, min_volt = 150;
 float max_ampier = 31, min_ampier = 0.20;
 
@@ -57,8 +86,8 @@ int PinMainTemp = 1;
 const int temp = 15;
 
 
-#define ADC_VREF_mV    3300.0 // in millivolt
-#define ADC_RESOLUTION 4096.0
+//#define ADC_VREF_mV    3300.0 // in millivolt
+//#define ADC_RESOLUTION 4096.0
 
 #define LED_BUILTIN 2
 #define waterFlowPin  27
@@ -80,19 +109,19 @@ float units;
 String varNames[50];
 String varValues[50];
 
-int getObjectValSerial(String objName)
-{
-  int finalText = 50;
-  for (int y = 0; y < 50; y++)
-  {
-    if (varNames[y] == objName)
-    {
-
-      finalText = y;
-    }
-  }
-  return (finalText);
-}
+//int getObjectValSerial(String objName)
+//{
+//  int finalText = 50;
+//  for (int y = 0; y < 50; y++)
+//  {
+//    if (varNames[y] == objName)
+//    {
+//
+//      finalText = y;
+//    }
+//  }
+//  return (finalText);
+//}
 
 int rainSensorPin = 34;
 int maxRainPercentage = 50;
@@ -102,26 +131,7 @@ int sensorStatus; // whether the server asking for start the sensor switch. deta
 int redP = 5, greenP = 18, blueP = 19;
 //int redC = 0, greenC = 0, blueC = 0;
 
-#include <Arduino.h>
-#include <analogWrite.h>
 
-#include <WiFi.h>
-#include <HTTPClient.h>
-#include <Arduino_JSON.h>
-#include <assert.h>
-
-//const char* ssid = "High Tech Park Authority";
-//const char* password = "12345678";
-const char* ssid = "SiF";
-const char* password = "sif.systems";
-//const char* ssid = "Rkb";
-//const char* password = "12347890";
-
-String serverName = "http://sifsys.com/api/device/pump/response";
-//String serverName = "http://sif.systems/p.php";
-
-String Readings;
-float ReadingsArr[5];
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
